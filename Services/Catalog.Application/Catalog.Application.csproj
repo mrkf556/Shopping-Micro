@@ -13,9 +13,12 @@
   <ItemGroup>
     <Folder Include="Commands\" />
     <Folder Include="Handlers\" />
-    <Folder Include="Mapper\" />
-    <Folder Include="Responses\" />
-    <Folder Include="Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="14.2.0" />
   </ItemGroup>
 
 </Project>
