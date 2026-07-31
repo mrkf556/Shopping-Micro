@@ -17,5 +17,6 @@ namespace Catalog.Core.Repositories
         Task<bool> UpdateProduct(Product product);
         Task<bool> DeleteProduct(Product product);
         Task<bool> DeleteProduct(string id);
+        Task<Product> CreateProduct(Product product);
     }
 }
