@@ -14,7 +14,7 @@ namespace Catalog.Infrastructure.Data
             var existsCollection = brandCollection.Find(x => true).Any();
             if (existsCollection) return;
             var pathJson = Path.Combine(AppContext.BaseDirectory, "Data", "SeedData", "brands.json");
-            if (File.Exists(pathJson))
+            if (!File.Exists(pathJson))
             {
                 throw new Exception($"the seed data of the brand did't find:{pathJson}");
             }

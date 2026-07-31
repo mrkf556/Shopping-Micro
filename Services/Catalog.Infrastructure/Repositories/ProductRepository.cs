@@ -1,56 +1,73 @@
 ﻿using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
+using Catalog.Infrastructure.Data;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Catalog.Infrastructure.Repositories
 {
-    internal class ProductRepository : IProductRepository
+    public class ProductRepository : IProductRepository
     {
-        public Task<bool> DeleteProduct(Product product)
+        public readonly ICatalogContext _context;
+        public ProductRepository(ICatalogContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<IEnumerable<Product>> GetProductByBrand(string brand)
+        public async Task<bool> DeleteProduct(Product product)
         {
-            throw new NotImplementedException();
+            return await DeleteProduct(product.Id);
         }
 
-        public Task<IEnumerable<Product>> GetProductByBrandId(string brandId)
+        public async Task<bool> DeleteProduct(string id)
         {
-            throw new NotImplementedException();
+            var delete = await _context.Products.DeleteOneAsync(x => x.Id == id);
+            return delete.IsAcknowledged;
+
         }
 
-        public Task<IEnumerable<Product>> GetProductByName(string name)
+        public async Task<IEnumerable<Product>> GetProductByBrand(string brand)
         {
-            throw new NotImplementedException();
+            return await _context.Products.Find(x => x.Brands.Name == brand).ToListAsync();
         }
 
-        public Task<IEnumerable<Product>> GetProductByType(string type)
+        public async Task<IEnumerable<Product>> GetProductByBrandId(string brandId)
         {
-            throw new NotImplementedException();
+            return await _context.Products.Find(x => x.Brands.Id == brandId).ToListAsync();
         }
 
-        public Task<IEnumerable<Product>> GetProductByTypeId(string typeId)
+        public async Task<IEnumerable<Product>> GetProductByName(string name)
         {
-            throw new NotImplementedException();
+            return await _context.Products.Find(x => x.Types.Name == name).ToListAsync();
         }
 
-        public Task<IEnumerable<Product>> GetProducts()
+        public async Task<IEnumerable<Product>> GetProductByType(string type)
         {
-            throw new NotImplementedException();
+            return await _context.Products.Find(x => x.Types.Name == type).ToListAsync();
         }
 
-        public Task<Product> GetProductsById(string id)
+        public async Task<IEnumerable<Product>> GetProductByTypeId(string typeId)
         {
-            throw new NotImplementedException();
+            return await _context.Products.Find(x => x.Types.Id == typeId).ToListAsync();
         }
 
-        public Task<bool> UpdateProduct(Product product)
+        public async Task<IEnumerable<Product>> GetProducts()
         {
-            throw new NotImplementedException();
+            return await _context.Products.Find(x => true).ToListAsync();
+        }
+
+        public async Task<Product> GetProductsById(string id)
+        {
+            return await _context.Products.Find(x => x.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> UpdateProduct(Product product)
+        {
+            var result = await _context.Products.ReplaceOneAsync(x => x.Id == product.Id, product);
+            return result.IsAcknowledged && result.ModifiedCount > 0;
+
         }
     }
 }

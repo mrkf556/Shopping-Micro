@@ -7,9 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\..\..\brands.json" Link="Data\SeedData\brands.json" />
-    <Content Include="..\..\..\products.json" Link="Data\SeedData\products.json" />
-    <Content Include="..\..\..\types.json" Link="Data\SeedData\types.json" />
+    <Content Include="..\..\..\brands.json" Link="Data\SeedData\brands.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\products.json" Link="Data\SeedData\products.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\types.json" Link="Data\SeedData\types.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +24,10 @@
 
   <ItemGroup>
     <Folder Include="Data\SeedData\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.10" />
   </ItemGroup>
 
 </Project>

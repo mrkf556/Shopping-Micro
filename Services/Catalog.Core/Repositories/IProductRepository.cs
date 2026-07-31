@@ -16,5 +16,6 @@ namespace Catalog.Core.Repositories
         Task<IEnumerable<Product>> GetProductByBrandId(string brandId);
         Task<bool> UpdateProduct(Product product);
         Task<bool> DeleteProduct(Product product);
+        Task<bool> DeleteProduct(string id);
     }
 }

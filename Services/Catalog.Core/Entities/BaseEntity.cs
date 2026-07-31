@@ -12,7 +12,7 @@ namespace Catalog.Core.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         [BsonElement("Created_At")]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         [BsonElement("Updated_At")]
 
         public DateTime UpdatedAt { get; set; }
