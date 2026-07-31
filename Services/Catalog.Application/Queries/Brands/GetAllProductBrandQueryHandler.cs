@@ -2,11 +2,9 @@
 using Catalog.Application.Responses;
 using Catalog.Core.Repositories;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Catalog.Application.Queries
+
+namespace Catalog.Application.Queries.Brands
 {
     public class GetAllProductBrandQuery : IRequest<IEnumerable<BrandResponse>>
     {
