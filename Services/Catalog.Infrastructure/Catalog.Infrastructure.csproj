@@ -7,7 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\..\..\brands.json" Link="Data\SeedData\brands.json" />
+    <Content Include="..\..\..\products.json" Link="Data\SeedData\products.json" />
+    <Content Include="..\..\..\types.json" Link="Data\SeedData\types.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Catalog.Application\Catalog.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\SeedData\" />
   </ItemGroup>
 
 </Project>
