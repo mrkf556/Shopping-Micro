@@ -3,14 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.Api.Controllers
 {
+    [ApiVersion("1.0")]
+
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    [ApiVersion("1.0")]
-    public class ApiController : ControllerBase
-    {
-        public IActionResult Test()
-        {
-            return Ok();
-        }
-    }
+    public class ApiController : ControllerBase;
 }

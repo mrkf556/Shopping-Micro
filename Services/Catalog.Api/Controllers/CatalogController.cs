@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+
     public class CatalogController : ApiController
     {
         private readonly IMediator _mediator;

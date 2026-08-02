@@ -1,14 +1,19 @@
+using Catalog.Application;
 using Catalog.Application.Responses;
 using Catalog.Core.Repositories;
+using Catalog.Infrastructure;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Repositories;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddControllers();
 // Add services to the container.
+builder.Services.AddApplicationInfra();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+
 builder.Services.AddSingleton<ICatalogContext, CatalogContext>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<ITypeRepository, TypeRepository>();
@@ -16,9 +21,15 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 
 builder.Services.AddAutoMapper(typeof(Program));
-///follow handler on all app
-builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+builder.Services.AddApiVersioning(v =>
+{
+    v.DefaultApiVersion = new Asp.Versioning.ApiVersion(1, 0);
+    v.AssumeDefaultVersionWhenUnspecified = true;
+    v.ReportApiVersions = true;
 
+});
+///follow handler on all app
+//builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
@@ -35,7 +46,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.MapControllers();
 app.Run();
 
 
