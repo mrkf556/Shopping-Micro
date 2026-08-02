@@ -18,8 +18,8 @@ namespace Catalog.Infrastructure.Repositories
 
         public async Task<Product> CreateProduct(Product product)
         {
-            var result = await _context.Products.InsertOneAsync(product);
-            return result;
+            await  _context.Products.InsertOneAsync(product);
+            return product;
         }
 
         public async Task<bool> DeleteProduct(Product product)
