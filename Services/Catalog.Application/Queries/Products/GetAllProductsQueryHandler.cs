@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Catalog.Application.Responses;
+using Catalog.Core.CatalogSpecs;
 using Catalog.Core.Repositories;
 using MediatR;
 using System;
@@ -8,11 +9,11 @@ using System.Text;
 
 namespace Catalog.Application.Queries.Products
 {
-    public class GetAllProductsQuery:IRequest<IEnumerable<ProductResponse>>
+    public class GetAllProductsQuery : CatalogSpecsParams, IRequest<Pagination<ProductResponse>>
     {
 
     }
-    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<ProductResponse>>
+    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, Pagination<ProductResponse>>
     {
         private readonly IMapper _mapper;
         private readonly IProductRepository _productRepository;
@@ -22,10 +23,10 @@ namespace Catalog.Application.Queries.Products
             _productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<ProductResponse>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        public async Task<Pagination<ProductResponse>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            var result = await _productRepository.GetProducts();
-            return  _mapper.Map<IEnumerable<ProductResponse>>(result);
+            var result = await _productRepository.GetProducts(request);
+            return _mapper.Map<Pagination<ProductResponse>>(result);
         }
     }
 }

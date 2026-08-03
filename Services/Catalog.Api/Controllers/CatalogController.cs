@@ -3,9 +3,12 @@ using Catalog.Application.Queries.Brands;
 using Catalog.Application.Queries.Products;
 using Catalog.Application.Queries.Types;
 using Catalog.Application.Responses;
+using Catalog.Core.CatalogSpecs;
+using Catalog.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 
 namespace Catalog.Api.Controllers
 {
@@ -20,17 +23,17 @@ namespace Catalog.Api.Controllers
         {
             return Ok(await _mediator.Send(new GetProductByIdQuery(id), cancellation));
         }
-        [HttpGet("{name}")]
+        [HttpGet("byName/{name}")]
         public async Task<ActionResult<ProductResponse>> GetProductsByName(string name, CancellationToken cancellation)
         {
             return Ok(await _mediator.Send(new GetProductByNameQuery(name), cancellation));
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetAllProducts(CancellationToken cancellation)
+        public async Task<ActionResult<Pagination<ProductResponse>>> GetAllProducts([FromQuery] GetAllProductsQuery catalogSpecsParams, CancellationToken cancellation)
         {
 
 
-            return Ok(await _mediator.Send(new GetAllProductsQuery(), cancellation));
+            return Ok(await _mediator.Send(catalogSpecsParams, cancellation));
 
         }
         [HttpGet("brand")]

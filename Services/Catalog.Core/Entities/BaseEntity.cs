@@ -11,10 +11,10 @@ namespace Catalog.Core.Entities
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        [BsonElement("Created_At")]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        [BsonElement("Updated_At")]
+        //[BsonElement("Created_At")]
+        //public DateTime CreatedAt { get; set; } = DateTime.Now;
+        //[BsonElement("Updated_At")]
 
-        public DateTime UpdatedAt { get; set; }
+        //public DateTime UpdatedAt { get; set; }
     }
 }

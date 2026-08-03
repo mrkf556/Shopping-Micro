@@ -3,13 +3,12 @@ using Catalog.Application.Responses;
 using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
 using MediatR;
- 
+
 
 namespace Catalog.Application.Handlers.Products
 {
     public class CreateProductCommand : IRequest<ProductResponse>
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public string Summery { get; set; }
         public string Description { get; set; }
