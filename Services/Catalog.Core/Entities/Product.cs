@@ -6,6 +6,8 @@ using System.Text;
 
 namespace Catalog.Core.Entities
 {
+    [BsonIgnoreExtraElements]
+
     public class Product : BaseEntity
     {
         [BsonElement(nameof(Name))]

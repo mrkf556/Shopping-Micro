@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Catalog.Core.Entities
 {
+    [BsonIgnoreExtraElements]
     public class BaseEntity
     {
         [BsonId]

@@ -5,6 +5,8 @@ using System.Text;
 
 namespace Catalog.Core.Entities
 {
+    [BsonIgnoreExtraElements]
+
     public class ProductBrand : BaseEntity
     {
         [BsonElement(nameof(Name))]

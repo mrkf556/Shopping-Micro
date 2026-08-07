@@ -5,6 +5,12 @@
     <Project Path="Services/Catalog.Core/Catalog.Core.csproj" />
     <Project Path="Services/Catalog.Infrastructure/Catalog.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/Services/Basket/">
+    <Project Path="Services/Basket/Basket.Api/Basket.Api.csproj" Id="378e067c-7e3e-4c16-b896-7158c0384a21" />
+    <Project Path="Services/Basket/Basket.Application/Basket.Application.csproj" Id="6e069879-0074-4812-8004-38015dd02c30" />
+    <Project Path="Services/Basket/Basket.Core/Basket.Core.csproj" Id="dc7c550f-a0d8-4654-8a3e-5a90c7539d54" />
+    <Project Path="Services/Basket/Basket.Infrastructure/Basket.Infrastructure.csproj" Id="1e120d4c-6946-47d4-a136-8862c15b999b" />
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
