@@ -1,7 +1,7 @@
 ﻿using Catalog.Core.CatalogSpecs;
 using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
-using Catalog.Infrastructure.Data;
+using Catalog.Infrastructure.Data.Context;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;

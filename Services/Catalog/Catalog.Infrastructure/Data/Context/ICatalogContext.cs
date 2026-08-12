@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Catalog.Infrastructure.Data
+namespace Catalog.Infrastructure.Data.Context
 {
     public interface ICatalogContext
     {

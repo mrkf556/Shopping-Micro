@@ -3,6 +3,7 @@ using Catalog.Application.Responses;
 using Catalog.Core.Repositories;
 using Catalog.Infrastructure;
 using Catalog.Infrastructure.Data;
+using Catalog.Infrastructure.Data.Context;
 using Catalog.Infrastructure.Repositories;
 using System.Reflection;
 
@@ -14,10 +15,6 @@ builder.Services.AddApplicationInfra();
 builder.Services.AddOpenApi();
 
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<ICatalogContext, CatalogContext>();
-builder.Services.AddScoped<IBrandRepository, BrandRepository>();
-builder.Services.AddScoped<ITypeRepository, TypeRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 
 builder.Services.AddAutoMapper(typeof(Program));
