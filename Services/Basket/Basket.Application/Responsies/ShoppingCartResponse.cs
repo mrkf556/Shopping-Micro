@@ -1,24 +1,25 @@
-﻿using System;
+﻿using Basket.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Basket.Core.Entities
+namespace Basket.Application.Responsies
 {
-    public class ShoppingCart
+    public class ShoppingCartResponse
     {
    
 
-        public string UserName { get; set; }
-        public Guid id { get; set; }
+        public string? UserName { get; set; }
+        public Guid id { get; set; } 
 
         public List<ShoppingCartItems> Items { get; set; } = new();
 
-        public ShoppingCart(string userName, Guid id)
+        
+        public ShoppingCartResponse(string userName )
         {
             UserName = userName;
-            this.id = id;
+         
         }
-
         public decimal CalculatedOrginalPrice()
         {
             return Items.Sum(item => item.Price * item.Quantity);

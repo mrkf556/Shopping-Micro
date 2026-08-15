@@ -1,4 +1,5 @@
-﻿ 
+﻿
+using Basket.Application;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Basket.Infrastructure
@@ -7,7 +8,9 @@ namespace Basket.Infrastructure
     {
         public static IServiceCollection AddApplicationInfra(this IServiceCollection services)
         {
-            return null;
+            services.AddApplication();
+             
+            return services;
         }
     }
 }
