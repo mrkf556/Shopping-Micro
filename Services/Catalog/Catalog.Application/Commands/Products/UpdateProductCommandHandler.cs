@@ -3,12 +3,15 @@ using Catalog.Application.Responses;
 using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-
-namespace Catalog.Application.Handlers.Products
+namespace Catalog.Application.Commands.Products
 {
-    public class CreateProductCommand : IRequest<ProductResponse>
+    public class UpdateProductCommand : IRequest<bool>
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Summery { get; set; }
         public string Description { get; set; }
@@ -19,21 +22,19 @@ namespace Catalog.Application.Handlers.Products
         public ProductBrand Brands { get; set; }
         public ProductType Types { get; set; }
     }
-    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProductResponse>
+    public class UpdaterProductCommandHandler : IRequestHandler<UpdateProductCommand, bool>
     {
-
         private readonly IMapper _mapper;
         private readonly IProductRepository _productRepository;
-        public CreateProductCommandHandler(IMapper mapper, IProductRepository productRepository)
+        public UpdaterProductCommandHandler(IMapper mapper, IProductRepository productRepository)
         {
             _mapper = mapper;
             _productRepository = productRepository;
         }
-        public async Task<ProductResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Product>(request);
-            var result = await _productRepository.CreateProduct(entity);
-            return _mapper.Map<ProductResponse>(result);
+            return await _productRepository.UpdateProduct(entity);
 
         }
     }

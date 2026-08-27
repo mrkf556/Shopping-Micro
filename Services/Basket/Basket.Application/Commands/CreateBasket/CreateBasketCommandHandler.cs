@@ -28,10 +28,24 @@ namespace Basket.Application.Commands.CreateBasket
         }
         public async Task<ShoppingCartResponse> Handle(CreateBasketCommand request, CancellationToken cancellationToken)
         {
-            var shoppingConvert = _mapper.Map<ShoppingCart>(request);
-            await _basketRepository.UpdateBasket(shoppingConvert);
-            return _mapper.Map<ShoppingCartResponse>(request);
+            //var shoppingConvert = new ShoppingCart();
 
+            //shoppingConvert.UserName = request.Username;
+            //shoppingConvert.Items = request.Items;
+            try
+            {
+                 
+                var shoppingConvert = _mapper.Map<ShoppingCart>(request);
+               
+                await _basketRepository.UpdateBasket(shoppingConvert);
+                return _mapper.Map<ShoppingCartResponse>(shoppingConvert);
+
+            }
+            catch (Exception ex)
+            {
+                //ServiceResult استفاده کنیم 
+                return _mapper.Map<ShoppingCartResponse>(request);
+            }
 
         }
     }

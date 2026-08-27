@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Catalog.Application.Handlers.Products;
+using Catalog.Application.Commands.Products;
 using Catalog.Application.Responses;
 using Catalog.Core.CatalogSpecs;
 using Catalog.Core.Entities;

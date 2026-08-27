@@ -1,4 +1,5 @@
 <Solution>
+  <Folder Name="/Services/" />
 
   <Folder Name="/Services/Basket/">
     <Project Path="Services/Basket/Basket.Api/Basket.Api.csproj" Id="378e067c-7e3e-4c16-b896-7158c0384a21" />
@@ -7,12 +8,18 @@
     <Project Path="Services/Basket/Basket.Infrastructure/Basket.Infrastructure.csproj" Id="1e120d4c-6946-47d4-a136-8862c15b999b" />
   </Folder>
     <Folder Name="/Services/Catalog/">
-    <Project Path="Services/Catalog/Catalog.Api/Catalog.Api.csproj" />
-    <Project Path="Services/Catalog/Catalog.Application/Catalog.Application.csproj" />
-    <Project Path="Services/Catalog/Catalog.Core/Catalog.Core.csproj" />
-    <Project Path="Services/Catalog/Catalog.Infrastructure/Catalog.Infrastructure.csproj" />
+      <Project Path="Services/Catalog/Catalog.Api/Catalog.Api.csproj" />
+      <Project Path="Services/Catalog/Catalog.Application/Catalog.Application.csproj" />
+      <Project Path="Services/Catalog/Catalog.Core/Catalog.Core.csproj" />
+      <Project Path="Services/Catalog/Catalog.Infrastructure/Catalog.Infrastructure.csproj" />
+    </Folder>
+  <Folder Name="/Services/Discount/">
+    <Project Path="Services/Discount/Discount.Api/Discount.Api.csproj" Id="293ef3ea-ccf8-48bc-81cc-6233738cdd02" />
+    <Project Path="Services/Discount/Discount.Application/Discount.Application.csproj" Id="d9d03230-9ae2-4e80-97a4-6cfc62e1d2c2" />
+    <Project Path="Services/Discount/Discount.Core/Discount.Core.csproj" Id="29ce6a35-a31e-4819-9e03-03f08c62d4af" />
+    <Project Path="Services/Discount/Discount.Infrastructure/Discount.Infrastructure.csproj" Id="4f9eaf46-e2e3-45c0-9867-b43fcd3bc42a" />
   </Folder>
-   <Project Path="docker-compose.dcproj">
+  <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
 </Solution>

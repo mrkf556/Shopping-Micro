@@ -1,4 +1,4 @@
-﻿using Catalog.Application.Handlers.Products;
+﻿using Catalog.Application.Commands.Products;
 using Catalog.Application.Queries.Brands;
 using Catalog.Application.Queries.Products;
 using Catalog.Application.Queries.Types;

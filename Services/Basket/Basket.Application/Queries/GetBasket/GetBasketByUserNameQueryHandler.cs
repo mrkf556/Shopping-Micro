@@ -8,9 +8,13 @@ using System.Text;
 
 namespace Basket.Application.Queries.GetBasket
 {
-    public class GetBasketByUserNameQuery(string Username):IRequest<ShoppingCartResponse>
+    public class GetBasketByUserNameQuery :IRequest<ShoppingCartResponse>
     {
-        public string Username { get; set; } = Username;
+        public string Username;
+        public GetBasketByUserNameQuery(string Username)
+        {
+            this.Username= Username;
+        }
 
     }
     public class GetBasketByUserNameQueryHandler : IRequestHandler<GetBasketByUserNameQuery, ShoppingCartResponse>
@@ -28,6 +32,14 @@ namespace Basket.Application.Queries.GetBasket
         {
             var basket = await _basketRepository.GetBasket(request.Username);
             if (basket == null) {
+                //اگر در dto ان سازنده نداشتیم به شکل زیر باید عمل میکردیم
+                //if (basket == null)
+                //{
+                //    return new ShoppingCartResponse
+                //    {
+                //        UserName = request.Username
+                //    };
+                //}
                 return new ShoppingCartResponse(request.Username);
             }
             return _mapper.Map<ShoppingCartResponse>(basket);

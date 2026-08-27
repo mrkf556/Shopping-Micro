@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Basket.Application.Commands.CreateBasket;
 using Basket.Application.Responsies;
 using Basket.Core.Entities;
 using System;
@@ -11,8 +12,18 @@ namespace Basket.Application.Mapper
     {
         public ProfileMapper()
         {
-            CreateMap<ShoppingCartItems, ShoppingCartResponse>().ReverseMap();
+            CreateMap<ShoppingCartItems, ShopingCartItemResponse>().ReverseMap();
+           // CreateMap<ShoppingCart, CreateBasketCommand>().ReverseMap();
+            CreateMap<CreateBasketCommand, ShoppingCart>()
+     .ForCtorParam(
+         "userName",
+         opt => opt.MapFrom(src => src.Username))
+     .ForCtorParam(
+         "id",
+         opt => opt.MapFrom(src => Guid.NewGuid()));
+
             CreateMap<ShoppingCart, ShoppingCartResponse>().ReverseMap();
+            CreateMap<ShoppingCartResponse, CreateBasketCommand>().ReverseMap();
 
         }
     }

@@ -32,4 +32,21 @@ services:
 
 
 
- 
+
+  #basket db 6379 6379
+  basketdb:
+    container_name: basketdb
+    restart: always
+    ports:
+         - "6379:6379"
+  #basket.api
+  basket.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - "ConnectionStrings__Redis=basketdb:6379"
+    depends_on:
+       - basketdb
+    ports:
+      - "9001:8080"
+

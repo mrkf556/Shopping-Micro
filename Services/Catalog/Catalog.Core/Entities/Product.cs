@@ -10,6 +10,8 @@ namespace Catalog.Core.Entities
 
     public class Product : BaseEntity
     {
+   
+
         [BsonElement(nameof(Name))]
         public string Name { get; set; }
         public string Summery { get; set; }

@@ -10,5 +10,5 @@ namespace Basket.Core.Repositories
         Task<ShoppingCart?> GetBasket(string username);
         Task<ShoppingCart?> UpdateBasket(ShoppingCart cart);
         Task DeleteBasket(string username);
-    }
+     }
 }

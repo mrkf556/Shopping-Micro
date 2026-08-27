@@ -10,11 +10,11 @@ namespace Basket.Application.Responsies
    
 
         public string? UserName { get; set; }
-        public Guid id { get; set; } 
+        public Guid id { get; set; }  
 
         public List<ShoppingCartItems> Items { get; set; } = new();
+      
 
-        
         public ShoppingCartResponse(string userName )
         {
             UserName = userName;

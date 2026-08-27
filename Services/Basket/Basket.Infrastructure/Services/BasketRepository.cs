@@ -38,6 +38,8 @@ namespace Basket.Infrastructure.Services
             return JsonSerializer.Deserialize<ShoppingCart>(value.ToString());
         }
 
+     
+
         public async Task<ShoppingCart> UpdateBasket(ShoppingCart cart)
         {
 

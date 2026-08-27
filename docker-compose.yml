@@ -7,7 +7,17 @@ services:
     image: ${DOCKER_REGISTRY-}catalogapi
     build:
       context: .
-      dockerfile: Services/Catalog.Api/Dockerfile
- 
+      dockerfile: Services/Catalog/Catalog.Api/Dockerfile
+
+  #basketdb
+  basketdb:
+    image: redis
+  #basket
+  basket.api:
+    image: ${DOCKER_REGISTRY-}basketapi
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.Api/Dockerfile
+
 volumes:
   mongo_data:
