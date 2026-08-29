@@ -1,8 +1,7 @@
 ﻿using Discount.Application.Protos;
+using Discount.Core.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+ 
 
 namespace Discount.Application.CQRS.Query
 {

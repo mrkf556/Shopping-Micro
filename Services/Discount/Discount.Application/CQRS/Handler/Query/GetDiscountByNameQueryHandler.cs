@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Discount.Application.CQRS.Query;
 using Discount.Application.Protos;
+using Discount.Core.Entities;
 using Discount.Core.Interfaces;
 using Grpc.Core;
 using MediatR;

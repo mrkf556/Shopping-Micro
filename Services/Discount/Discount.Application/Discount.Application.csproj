@@ -24,9 +24,4 @@
     <Protobuf Include="Protos\Discount.proto" GrpcServices="Server" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CQRS\Command\" />
-    <Folder Include="CQRS\Handler\Command\" />
-  </ItemGroup>
-
 </Project>
