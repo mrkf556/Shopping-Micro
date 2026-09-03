@@ -1,4 +1,6 @@
+using Basket.Application.GrpcService;
 using Basket.Infrastructure;
+using Discount.Application.Protos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddApplicationInfra(builder.Configuration);
+//GRPC
+builder.Services.AddScoped<DiscountGrpcService>();
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+});
 
 builder.Services.AddSwaggerGen();
 

@@ -1,13 +1,23 @@
 services:
+
+  # ========================================
+  # Catalog Database - MongoDB
+  # ========================================
   catalogdb:
     container_name: catalogdb
+    image: mongo:latest
     restart: always
     ports:
-         - "27017:27017"
+      - "27017:27017"
     volumes:
-         - "mongo_data:/data/db"
-  #catalogapi
+      - "mongo_data:/data/db"
+
+
+  # ========================================
+  # Catalog API
+  # ========================================
   catalog.api:
+    container_name: catalog.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -17,36 +27,123 @@ services:
       - "DatabaseConnection__CollectionName=Products"
       - "DatabaseConnection__BrandsCollection=Brands"
       - "DatabaseConnection__TypesCollection=Types"
-      - "ElasticConfiguration__Uri=http://elasticsearch:9200" 
+      
+
     depends_on:
-       - catalogdb
+      - catalogdb
+     
+
     ports:
       - "9000:8080"
-     
+
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - "${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro"
+      - "${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro"
+      - "${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro"
+      - "${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro"
 
 
-
-
-
-  #basket db 6379 6379
+  # ========================================
+  # Basket Database - Redis
+  # ========================================
   basketdb:
     container_name: basketdb
+    image: redis:latest
     restart: always
     ports:
-         - "6379:6379"
-  #basket.api
+      - "6379:6379"
+
+
+  # ========================================
+  # Basket API
+  # ========================================
   basket.api:
+    container_name: basket.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - "ConnectionStrings__Redis=basketdb:6379"
+
     depends_on:
-       - basketdb
+      - basketdb
+
     ports:
       - "9001:8080"
 
+
+  # ========================================
+  # Discount Database - PostgreSQL
+  # ========================================
+  discountdb:
+    container_name: discountdb
+    image: postgres:17
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Password@1
+      - POSTGRES_DB=DiscountDb
+
+    restart: always
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d DiscountDb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+
+  # ========================================
+  # pgAdmin
+  # ========================================
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@eCommerce.net
+      - PGADMIN_DEFAULT_PASSWORD=Password@1
+
+    restart: always
+
+    ports:
+      - "5050:80"
+
+    volumes:
+      - "pgadmin_data:/root/.pgadmin"
+
+    depends_on:
+      - discountdb
+
+
+  # ========================================
+  # Discount API
+  # ========================================
+  discount.api:
+    container_name: discount.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:8080
+      - "DatabaseSettings__ConnectionString=Server=discountdb;Port=5432;Database=DiscountDb;User Id=admin;Password=Password@1;"
+
+    depends_on:
+      discountdb:
+        condition: service_healthy
+
+    ports:
+      - "9002:8080"
+
+
+ 
+# ========================================
+# Volumes
+# ========================================
+volumes:
+  mongo_data:
+  postgres_data:
+  pgadmin_data:
+   

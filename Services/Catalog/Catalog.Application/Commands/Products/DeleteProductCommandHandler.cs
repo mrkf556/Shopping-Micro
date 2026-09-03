@@ -17,7 +17,7 @@ namespace Catalog.Application.Commands.Products
             Id = id;
         }
     }
-    public class DeleteProductCommandHandler : IRequestHandler<UpdateProductCommand, bool>
+    public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, bool>
     {
         private readonly IMapper _mapper;
         private readonly IProductRepository _productRepository;
@@ -26,7 +26,7 @@ namespace Catalog.Application.Commands.Products
             _mapper = mapper;
             _productRepository = productRepository;
         }
-        public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
 
             return await _productRepository.DeleteProduct(request.Id);

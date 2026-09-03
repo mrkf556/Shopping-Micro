@@ -16,7 +16,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddSwaggerGen();
 
-
+ 
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddApiVersioning(v =>
 {

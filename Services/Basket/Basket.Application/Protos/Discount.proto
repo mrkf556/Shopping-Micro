@@ -1,0 +1,49 @@
+﻿syntax = "proto3";
+option csharp_namespace = "Discount.Application.Protos";
+
+service DiscountProtoService {
+  rpc CreateDiscount(CreateDiscountRequest) returns (CouponModel);
+  rpc GetDiscountByName(GetDiscountRequest) returns (CouponModel);
+  rpc GetDiscountById(GetDiscountByIdRequest) returns (CouponModel);
+  rpc UpdateDiscount(UpdateDiscountRequest) returns (CouponModel);
+  rpc DeleteDiscountById(DeleteDiscountRequest) returns (DeleteDiscountResponse);
+  rpc DeleteDiscountByName(DeleteDiscountRequestByName) returns (DeleteDiscountResponse);
+}
+//STUB
+// Requests
+message CreateDiscountRequest {
+  CouponModel coupon = 1;
+}
+
+message GetDiscountRequest {
+  string productName = 1;
+}
+
+message GetDiscountByIdRequest {
+  string productId = 1; 
+}
+
+message UpdateDiscountRequest {
+  CouponModel coupon = 1;
+}
+
+message DeleteDiscountRequest {
+  string productId = 1; 
+}
+
+message DeleteDiscountRequestByName {
+  string productName = 1;
+}
+
+// Responses
+message CouponModel {
+  int32 id = 1;
+  string productName = 2;
+  string description = 3;
+  int32 amount = 4;
+  string productId = 5;
+}
+
+message DeleteDiscountResponse {
+  bool success = 1;
+}
