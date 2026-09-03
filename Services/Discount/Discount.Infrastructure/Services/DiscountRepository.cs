@@ -11,11 +11,11 @@ namespace Discount.Infrastructure.Services
 {
     public class DiscountRepository : IDiscountRepository
     {
-        private readonly IConfiguration _configuration;
-        private readonly string? _connectionValue;
-        public DiscountRepository( )
+        private readonly string _connectionValue;
+        public DiscountRepository(IConfiguration configuration) 
         {
-            _connectionValue = _configuration.GetValue<string>("DatabaseSettings:ConnectionString");
+            _connectionValue = configuration["DatabaseSettings:ConnectionString"] ?? 
+                throw new InvalidOperationException("Database connection string is not configured."); 
         }
         public async  Task<bool> CreateDiscount(Discounts discounts)
         {

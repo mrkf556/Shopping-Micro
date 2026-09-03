@@ -8,68 +8,154 @@ namespace Discount.Infrastructure.Extensions;
 
 public static class DbExtension
 {
-    public static IHost MigrateDatabase<TContext>(this IHost host)
+    public static IHost MigrateDatabase(this IHost host)
     {
         using var scope = host.Services.CreateScope();
+
         var serviceProvider = scope.ServiceProvider;
-        var logger = serviceProvider.GetRequiredService<ILogger<TContext>>();
-        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+
+        var configuration =
+            serviceProvider.GetRequiredService<IConfiguration>();
+
+        var logger =
+            serviceProvider
+                .GetRequiredService<ILoggerFactory>()
+                .CreateLogger("DatabaseMigration");
+
         try
         {
-            logger.LogInformation("Start Migration on {DbContextName}", typeof(TContext).Name);
-            ApplyMigrateOnDb<TContext>(configuration, logger);
-            logger.LogInformation("Database was migrated");
+            logger.LogInformation(
+                "Starting database migration...");
+
+            ApplyMigration(
+                configuration,
+                logger);
+
+            logger.LogInformation(
+                "Database migration completed successfully.");
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            logger.LogError(e, "an error occured in the database {DbContextName}", typeof(TContext).Name);
+            logger.LogError(
+                ex,
+                "An error occurred during database migration.");
+
             throw;
         }
 
         return host;
     }
 
-    private static void ApplyMigrateOnDb<TContext>(IConfiguration configuration, ILogger logger)
+    private static void ApplyMigration(
+        IConfiguration configuration,
+        ILogger logger)
     {
+        var connectionString =
+            configuration["DatabaseSettings:ConnectionString"];
+
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException(
+                "Database connection string is not configured.");
+        }
+
         var retry = 5;
+
         while (retry > 0)
         {
             try
             {
                 using var connection =
-                    new NpgsqlConnection(configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+                    new NpgsqlConnection(connectionString);
+
                 connection.Open();
-                using var cmd = new NpgsqlCommand();
-                cmd.Connection = connection;
-                //Drop Table
-                cmd.CommandText = "DROP TABLE IF EXISTS Coupon";
-                cmd.ExecuteNonQuery();
-                //Create Table
-                cmd.CommandText = @"CREATE TABLE Discounts(Id SERIAL PRIMARY KEY, 
-                                                    ProductId TEXT,
-                                                    ProductName VARCHAR(500) NOT NULL,
-                                                    Description TEXT,
-                                                    Amount INT)";
-                cmd.ExecuteNonQuery();
-                //Seed Data 1
-                cmd.CommandText =
-                    "INSERT INTO Discounts(ProductName, Description, Amount, ProductId) VALUES('Adidas Quick Force Indoor Badminton Shoes', 'Shoe Discount', 500, '602d2149e773f2a3990b47f5');";
-                cmd.ExecuteNonQuery();
-                //Seed Data 2
-                cmd.CommandText =
-                    "INSERT INTO Discounts(ProductName, Description, Amount, ProductId) VALUES('Yonex VCORE Pro 100 A Tennis Racquet (270gm, Strung)', 'Racquet Discount', 700, '992d2149e773f2a3990b47fa');";
-                cmd.ExecuteNonQuery();
+
+                using var command =
+                    connection.CreateCommand();
+
+                // Create Discounts table
+                command.CommandText = """
+                    CREATE TABLE IF NOT EXISTS Discounts
+                    (
+                        Id SERIAL PRIMARY KEY,
+                        ProductId TEXT NOT NULL,
+                        ProductName VARCHAR(500) NOT NULL,
+                        Description TEXT,
+                        Amount INT NOT NULL
+                    );
+                    """;
+
+                command.ExecuteNonQuery();
+
+                logger.LogInformation(
+                    "Discounts table is ready.");
+
+                // Seed 1
+                command.CommandText = """
+                    INSERT INTO Discounts
+                    (
+                        ProductName,
+                        Description,
+                        Amount,
+                        ProductId
+                    )
+                    SELECT
+                        'Adidas Quick Force Indoor Badminton Shoes',
+                        'Shoe Discount',
+                        500,
+                        '602d2149e773f2a3990b47f5'
+                    WHERE NOT EXISTS
+                    (
+                        SELECT 1
+                        FROM Discounts
+                        WHERE ProductId = '602d2149e773f2a3990b47f5'
+                    );
+                    """;
+
+                command.ExecuteNonQuery();
+
+                // Seed 2
+                command.CommandText = """
+                    INSERT INTO Discounts
+                    (
+                        ProductName,
+                        Description,
+                        Amount,
+                        ProductId
+                    )
+                    SELECT
+                        'Yonex VCORE Pro 100 A Tennis Racquet (270gm, Strung)',
+                        'Racquet Discount',
+                        700,
+                        '992d2149e773f2a3990b47fa'
+                    WHERE NOT EXISTS
+                    (
+                        SELECT 1
+                        FROM Discounts
+                        WHERE ProductId = '992d2149e773f2a3990b47fa'
+                    );
+                    """;
+
+                command.ExecuteNonQuery();
+
+                logger.LogInformation(
+                    "Database seed completed.");
+
                 break;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 retry--;
+
                 if (retry == 0)
                 {
                     throw;
                 }
 
-                logger.LogWarning(e, "Retrying database migration, attempts left: {Retry}", retry);
+                logger.LogWarning(
+                    ex,
+                    "Database is not ready. Retrying... Attempts left: {Retry}",
+                    retry);
 
                 Thread.Sleep(2000);
             }

@@ -1,39 +1,55 @@
+using AutoMapper;
+using Discount.Api.Services;
+using Discount.Application.CQRS.Handler.Query;
+using Discount.Application.Mapper;
+using Discount.Core.Interfaces;
+using Discount.Infrastructure.Extensions;
+using Discount.Infrastructure.Services;
+using System.Reflection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddControllers();
+ 
+
+ 
+var mapperConfig = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile<DiscountMapper>();
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+
+builder.Services.AddSingleton(mapper);//Register Mediator
+var assemblies = new Assembly[]
+{
+    Assembly.GetExecutingAssembly(),
+    typeof(GetDiscountByNameQueryHandler).Assembly
+};
+//DI
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+//GRPC
+builder.Services.AddGrpc();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 
 var app = builder.Build();
+app.MigrateDatabase();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
-var summaries = new[]
+app.UseRouting();
+app.MapGrpcService<DiscountService>();
+app.Map("/", async context =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    await context.Response.WriteAsync("communication with GRPC");
+});
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+ 
